@@ -47,7 +47,6 @@ static void run_alsactl(
   char             *cmd,
   char             *fn
 ) {
-  printf("run_alsactl");
   GtkWindow *w = GTK_WINDOW(card->window_main);
 
   gchar *alsactl_path = g_find_program_in_path("alsactl");
