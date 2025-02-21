@@ -7,13 +7,6 @@
 #include "file.h"
 #include "stringhelper.h"
 
-static void ensure_reset_state(struct alsa_card *card) {
-  for (int i = 0; i < card->elems->len; i++) {
-    struct alsa_elem *elem = &g_array_index(card->elems, struct alsa_elem, i);
-    printf("[%3d] #%3d %s (%s) x%d\n", i, elem->numid, elem->name, snd_ctl_elem_type_name(elem->type), elem->count);
-  }
-}
-
 static void run_alsactl(
   struct alsa_card *card,
   char             *cmd,
@@ -26,7 +19,7 @@ static void run_alsactl(
   if (!alsactl_path)
     alsactl_path = g_strdup("/usr/sbin/alsactl");
 
-  ensure_reset_state(card);
+  alsa_ensure_reset_state(card);
   gchar *argv[] = {
     alsactl_path, cmd, card->device, "-f", fn, NULL
   };

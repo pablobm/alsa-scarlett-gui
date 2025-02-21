@@ -1218,3 +1218,11 @@ void alsa_unregister_reopen_callback(const char *serial) {
 int alsa_has_reopen_callbacks(void) {
   return g_hash_table_size(reopen_callbacks);
 }
+
+void alsa_ensure_reset_state(struct alsa_card *card) {
+  for (int i = 0; i < card->elems->len; i++) {
+    struct alsa_elem *elem = &g_array_index(card->elems, struct alsa_elem, i);
+    printf("[%3d] #%3d %s (%s) x%d\n", i, elem->numid, elem->name, snd_ctl_elem_type_name(elem->type), elem->count);
+  }
+}
+
