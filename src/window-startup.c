@@ -361,6 +361,7 @@ static void add_no_startup_controls_msg(GtkWidget *grid) {
 }
 
 GtkWidget *create_startup_controls(struct alsa_card *card) {
+  alsa_print_elements(card);
   alsa_ensure_reset_state(card);
   GArray *elems = card->elems;
 

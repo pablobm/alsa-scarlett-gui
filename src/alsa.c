@@ -1219,7 +1219,7 @@ int alsa_has_reopen_callbacks(void) {
   return g_hash_table_size(reopen_callbacks);
 }
 
-void alsa_ensure_reset_state(struct alsa_card *card) {
+void alsa_print_elements(struct alsa_card *card) {
   for (int elem_i = 0; elem_i < card->elems->len; elem_i++) {
     struct alsa_elem *elem = &g_array_index(card->elems, struct alsa_elem, elem_i);
     printf("[%3d] #%3d %s x%d - %s", elem_i, elem->numid, elem->name, elem->count, snd_ctl_elem_type_name(elem->type));
@@ -1236,6 +1236,19 @@ void alsa_ensure_reset_state(struct alsa_card *card) {
         break;
     }
     printf("\n");
+  }
+}
+
+void alsa_ensure_reset_state(struct alsa_card *card) {
+  for (int elem_i = 0; elem_i < card->elems->len; elem_i++) {
+    struct alsa_elem *elem = &g_array_index(card->elems, struct alsa_elem, elem_i);
+    switch (elem->type) {
+      case SND_CTL_ELEM_TYPE_INTEGER:
+      case SND_CTL_ELEM_TYPE_ENUMERATED:
+      case SND_CTL_ELEM_TYPE_BOOLEAN:
+        alsa_set_elem_value(elem, 1);
+        alsa_set_elem_value(elem, 0);
+    }
   }
 }
 

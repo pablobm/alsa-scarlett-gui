@@ -254,4 +254,5 @@ void alsa_register_reopen_callback(
 void alsa_unregister_reopen_callback(const char *serial);
 int alsa_has_reopen_callbacks(void);
 
+void alsa_print_elements(struct alsa_card *card);
 void alsa_ensure_reset_state(struct alsa_card *card);
