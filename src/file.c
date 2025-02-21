@@ -8,38 +8,10 @@
 #include "stringhelper.h"
 
 static void ensure_reset_state(struct alsa_card *card) {
-  snd_ctl_elem_list_t* list;
-  int count;
-
-  // Initialise list, in the stack
-  snd_ctl_elem_list_alloca(&list);
-
-  // Get number of elements
-  snd_ctl_elem_list(card->handle, list);
-  count = snd_ctl_elem_list_get_count(list);
-  printf("Count: %d\n", count);
-
-  snd_ctl_elem_list_alloc_space(list, count);
-
-  // Get identifiers
-  snd_ctl_elem_list(card->handle, list); // yes, this is same as above :)
-
-  // Do something useful with the list...
-  for (int i = 0; i < count; i++) {
-    int element_index = snd_ctl_elem_list_get_index(list, i);
-    const char* elem_name = snd_ctl_elem_list_get_name(list, i);
-    snd_ctl_elem_iface_t iface = snd_ctl_elem_list_get_interface(list, i);
-    const char* iface_name = snd_ctl_elem_iface_name(iface);
-    /*snd_ctl_elem_type_t type = snd_ctl_elem_info_get_type(list, i);*/
-
-    printf("%3d: %d - %s / %s\n", i, element_index, elem_name, iface_name);
+  for (int i = 0; i < card->elems->len; i++) {
+    struct alsa_elem *elem = &g_array_index(card->elems, struct alsa_elem, i);
+    printf("[%3d] #%3d %s (%s) x%d\n", i, elem->numid, elem->name, snd_ctl_elem_type_name(elem->type), elem->count);
   }
-
-  // Cleanup
-  snd_ctl_elem_list_free_space(list);
-
-  // No free because we allocated in the stack
-  // snd_ctl_elem_list_free(list);
 }
 
 static void run_alsactl(
