@@ -19,7 +19,6 @@ static void run_alsactl(
   if (!alsactl_path)
     alsactl_path = g_strdup("/usr/sbin/alsactl");
 
-  alsa_ensure_reset_state(card);
   gchar *argv[] = {
     alsactl_path, cmd, card->device, "-f", fn, NULL
   };
