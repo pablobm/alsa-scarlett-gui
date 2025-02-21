@@ -1246,8 +1246,10 @@ void alsa_ensure_reset_state(struct alsa_card *card) {
       case SND_CTL_ELEM_TYPE_INTEGER:
       case SND_CTL_ELEM_TYPE_ENUMERATED:
       case SND_CTL_ELEM_TYPE_BOOLEAN:
-        alsa_set_elem_value(elem, 1);
-        alsa_set_elem_value(elem, 0);
+        if (elem->is_writable) {
+          alsa_set_elem_value(elem, 1);
+          alsa_set_elem_value(elem, 0);
+        }
     }
   }
 }
