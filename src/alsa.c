@@ -1249,7 +1249,7 @@ void alsa_ensure_reset_state(struct alsa_card *card) {
       case SND_CTL_ELEM_TYPE_INTEGER:
       case SND_CTL_ELEM_TYPE_ENUMERATED:
       case SND_CTL_ELEM_TYPE_BOOLEAN:
-        if (elem->is_writable) {
+        if (alsa_get_elem_writable(elem)) {
           int value = alsa_get_elem_value(elem);
           alsa_set_elem_value(elem, 1);
           alsa_set_elem_value(elem, 0);
